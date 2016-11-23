@@ -1,0 +1,31 @@
+{
+  "name": "mongoose-blog",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "dependencies": {
+    "body-parser": "~1.15.2",
+    "config-lite": "*",
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.2.0",
+    "express": "~4.14.0",
+    "express-formidable": "*",
+    "multiparty":"*",
+    "express-handlebars": "*",
+    "express-session":"*",
+    "connect-mongo":"*",
+    "connect-flash":"*",
+    "moment": "*",
+    "mongolass": "^2.3.2",
+    "mongoose": "*",
+    "morgan": "~1.7.0",
+    "mysql": "*",
+    "objectid-to-timestamp": "^1.3.0",
+    "redis": "*",
+    "sequelize": "*",
+    "serve-favicon": "~2.3.0",
+    "sha1":"*"
+  }
+}

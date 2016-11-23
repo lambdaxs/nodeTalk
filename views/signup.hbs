@@ -1,0 +1,36 @@
+{{> background}}
+<div class="ui grid">
+    <div class="four wide column"></div>
+    <div class="eight wide column">
+        <form class="ui form segment" method="post" enctype="multipart/form-data">
+            <div class="field required">
+                <label>用户名</label>
+                <input placeholder="用户名" name="name">
+            </div>
+            <div class="field required">
+                <label>密码</label>
+                <input placeholder="密码" name="password" type="password">
+            </div>
+            <div class="field required">
+                <label>确认密码</label>
+                <input placeholder="确认密码" name="repassword" type="password">
+            </div>
+            <div class="field required">
+                <label>bio</label>
+                <input placeholder="bio" name="bio">
+            </div>
+            <div class="field required">
+                <label>性别</label>
+                <select name="gander" class="ui selection dropdown">
+                    <option value="m">基佬😯</option>
+                    <option value="f">妹嘤😝</option>
+                </select>
+            </div>
+            <div class="field required">
+                <label>头像</label>
+                <input type="file" name="avatar">
+            </div>
+            <input type="submit" class="ui button fluid" value="注册"/>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,28 @@
+<div class="post-item">
+    <div class="ui grid">
+        <div class="four wide column">
+            <a href="" class="avatar" data-title={{author.name}} data-content={{author.bio}}><img class="avatar" src="/images/{{author.avatar}}"></a>
+        </div>
+        <div class="eight wide column">
+            <div class="ui segment">
+                <h3>{{title}}</h3>
+                <pre>{{content}}</pre>
+                <div>
+                    <span class="tag">{{#date createdAt}}{{/date}}</span>
+                    <span class="tag right" style="float: right;">
+                    <span>浏览 10</span>
+                    <span>留言 1 </span>
+                    <div class="ui inline dropdown">
+                        <div class="text">操作</div>
+                        <i class="dropdown icon"></i>
+                        <div class="menu">
+                          <div class="item"><a href="/post/edit/{{_id}}">编辑</a></div>
+                          <div class="item"><a href="/post/remove/{{_id}}">删除</a></div>
+                        </div>
+                    </div>
+                </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

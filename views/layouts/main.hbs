@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{title}}</title>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <link rel="stylesheet" href="/stylesheets/style.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/semantic-ui/2.1.8/semantic.min.css">
+    <script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+    <script src="//cdn.bootcss.com/semantic-ui/2.1.8/semantic.min.js"></script>
+</head>
+<body>
+
+<!--导航-->
+<div class="nav">
+    <div class="ui grid">
+        <div class="four wide column"></div>
+        <div class="eight wide column">
+            <a href="/post/list/1/10"><h1>Lambda's Blog</h1></a>
+            <p>Only Coder</p>
+        </div>
+    </div>
+</div>
+<div class="nav-setting">
+    <div class="ui floating dropdown button">
+        <i class="icon bars"></i>
+        <div class="menu">
+            {{#if user}}
+            <a href="/index" class="item">个人主页</a>
+            <a href="/post/create" class="item">发布</a>
+            <a href="/user/signout" class="item">注销</a>
+            {{else}}
+            <a href="/user/signin" class="item">登录</a>
+            <a href="/user/signup" class="item">注册</a>
+            {{/if}}
+        </div>
+    </div>
+</div>
+
+<!--提示卡-->
+<div class="ui grid">
+    <div class="four wide column"></div>
+    <div class="eight wide column">
+        {{#if success}}
+        <div class="ui success message">
+            <p>{{success}}</p>
+        </div>
+        {{/if}}
+        {{#if error}}
+        <div class="ui error message">
+            <p>{{error}}</p>
+        </div>
+        {{/if}}
+    </div>
+</div>
+{{{body}}}
+</body>
+<script>
+    $('.ui.dropdown').dropdown()
+    $('.avatar').popup({
+        inline: true,
+        position: 'bottom right',
+        lastResort: 'bottom right',
+    })
+</script>
+</html>
