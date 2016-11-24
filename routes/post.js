@@ -12,16 +12,16 @@ const commentModel = require('../models/comment')
 
 
 //话题首页列表
-router.route('/list/:page/:count')
+router.route('/list/:page')
     .get((req,res,next)=>{
         const page = req.params.page*1 || 1
-        const count = req.params.count*1 || 10
+        const count = req.query.count || 10
         const skip = (page-1)*count
 
         Promise.all([postModel.getList(skip,count),postModel.getCount()])
             .then(rs=>{
                 const [posts,maxCount] = rs
-                const pageOptions = util.page(page,count,maxCount)
+                const pageOptions = util.page(page,count,maxCount,'/post/list')
 
                 Promise.all(posts.map(post=>{
                     return commentModel.getCountByPostId(post._id)
@@ -43,18 +43,24 @@ router.route('/list/:page/:count')
     })
 
 //个人主页列表
-router.route('/mine')
+router.route('/mine/:page')
     .get(filterNotLogin,(req,res,next)=>{
         const userId = req.session.user._id
+        const page = req.params.page*1 || 1
+        const count = req.query.count || 10
+        const skip = (page-1)*count
 
-        postModel.getListByUserId(userId)
-            .then(posts=>{
-                const rs = posts.map(post=>{
+        Promise.all([postModel.getListByUserId(userId,skip,count),postModel.getListCountByUserId(userId)])
+            .then(rs=>{
+                const [posts,maxCount] = rs
+                const pageOptions = util.page(page,count,maxCount,'/post/mine')
+                const result = posts.map(post=>{
                     post.isSelf = true
                     return post
                 })
-                res.render('post',{
-                    posts:rs
+                return res.render('post',{
+                    posts:result,
+                    page:pageOptions
                 })
             })
             .catch(err=>{
@@ -115,6 +121,22 @@ router.route('/create')
                 error:err
             })
         })
+    })
+
+//删除话题
+router.route('/remove/:postId')
+    .get(filterNotLogin,(req,res,next)=>{
+        const userId = req.session.user._id
+        const postId = req.params.postId
+        postModel.deleteById(userId,postId)
+            .then(rs=>{
+                req.flash('success','删除成功')
+                return res.redirect('back')
+            })
+            .catch(error=>{
+                req.flash('error','删除失败')
+                return res.redirect('back')
+            })
     })
 
 //发布评论

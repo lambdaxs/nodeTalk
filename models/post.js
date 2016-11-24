@@ -34,7 +34,7 @@ module.exports = {
           .exec()
     },
     //通过用户id获取文章列表
-    getListByUserId(userId){
+    getListByUserId(userId,skip,count){
         var query = {}
         if (userId){
             query.author = userId
@@ -42,12 +42,23 @@ module.exports = {
         return postModel
             .find(query)
             .populate({path:'author',model:userModel,select:'_id name avatar gander bio'})
+            .skip(skip)
+            .limit(count)
             .sort({_id:-1})
             .exec()
     },
+    getListCountByUserId(userId){
+        var query = {}
+        if (userId){
+            query.author = userId
+        }
+        return postModel
+            .count(query)
+            .exec()
+    },
     //删除文章
-    delById(userId,postId){
-        return postModel.remove({poster:userId,_id:postId}).exec()
+    deleteById(userId,postId){
+        return postModel.findByIdAndRemove(postId,{author:userId}).exec()
     },
     //浏览量+1
     incPv(postId){
