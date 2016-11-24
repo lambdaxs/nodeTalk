@@ -28,7 +28,7 @@ router.route('/signin')
                 }
                 if (sha1(password) !== user.password){
                     req.flash('error','密码错误')
-                    return res.render('/user/signin')
+                    return res.redirect('/user/signin')
                 }
                 req.flash('success','登录成功')
                 delete user.password
