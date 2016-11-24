@@ -10,13 +10,13 @@
             <form class="ui form segment" method="post" enctype="application/x-www-form-urlencoded">
                 <div class="field required">
                     <label>标题</label>
-                    <input placeholder="标题" name="title" v-model="title"/>
+                    <input placeholder="标题" v-model="title"/>
                 </div>
                 <div class="field required">
                     <label>内容</label>
-                    <textarea name="content" rows="12" placeholder="内容" v-mode="content"></textarea>
+                    <textarea v-model="content" rows="12" placeholder="内容"></textarea>
                 </div>
-                <input type="submit" value="完成" class="ui button fluid" v-on:click="vali"/>
+                <input value="完成" class="ui button fluid" v-on:click="vali"/>
             </form>
         </div>
     </div>
@@ -34,7 +34,33 @@
         },
         methods:{
             vali:function () {
-                console.log(this.title+this.content)
+                var data = {title:this.title,content:this.content}
+                var messageBox = $('#tip-view .eight')[0]
+                var error = ''
+                if (!this.title){
+                    error = '标题'
+                }else if (!this.content){
+                    error = '内容'
+                }
+                if(error){
+                    messageBox.innerHTML =
+                            '<div class="ui error message">' +
+                            '<p>'+error+'不能为空</p>' +
+                            '</div>'
+                    return;
+                }
+
+                $.post('/post/create',data,function (data, status) {
+                    if (data){
+                        messageBox.innerHTML =
+                                '<div class="ui success message">' +
+                                '<p>发表成功</p>' +
+                                '</div>'
+                        setTimeout(function () {
+                            window.location.href = '/post/list/1'
+                        },1500)
+                    }
+                })
             }
         }
     })

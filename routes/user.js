@@ -89,10 +89,10 @@ router.route('/signup')
                     delete user.password
                     req.session.user = user
                     req.flash('success','注册成功')
-                    return res.redirect('/post/list/1/10')
+                    return res.redirect('/post/list/1')
                 })
                 .catch(err=>{
-                    if (e.message.match('E11000 duplicate key')) {
+                    if (err.message.match('E11000 duplicate key')) {
                         req.flash('error', '用户名已被占用')
                     }else {
                         req.flash('error',err.message)

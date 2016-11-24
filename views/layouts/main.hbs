@@ -37,21 +37,24 @@
 </div>
 
 <!--提示卡-->
-<div class="ui grid">
-    <div class="four wide column"></div>
-    <div class="eight wide column">
-        {{#if success}}
-        <div class="ui success message">
-            <p>{{success}}</p>
+<div id="tip-view">
+    <div class="ui grid">
+        <div class="four wide column"></div>
+        <div class="eight wide column">
+            {{#if success}}
+            <div class="ui success message">
+                <p>{{success}}</p>
+            </div>
+            {{/if}}
+            {{#if error}}
+            <div class="ui error message">
+                <p>{{error}}</p>
+            </div>
+            {{/if}}
         </div>
-        {{/if}}
-        {{#if error}}
-        <div class="ui error message">
-            <p>{{error}}</p>
-        </div>
-        {{/if}}
     </div>
 </div>
+
 {{{body}}}
 </body>
 <script>
