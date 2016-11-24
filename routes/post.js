@@ -8,6 +8,7 @@ const util = require('../lib/util')
 
 const filterNotLogin = require('../middle/checkLogin').filterNotLogin
 const postModel = require('../models/post')
+const commentModel = require('../models/comment')
 
 
 //话题首页列表
@@ -20,10 +21,21 @@ router.route('/list/:page/:count')
         Promise.all([postModel.getList(skip,count),postModel.getCount()])
             .then(rs=>{
                 const [posts,maxCount] = rs
-                return res.render('post',{
-                    posts,
-                    page:util.page(page,count,maxCount)
+                const pageOptions = util.page(page,count,maxCount)
+
+                Promise.all(posts.map(post=>{
+                    return commentModel.getCountByPostId(post._id)
+                })).then(counts=>{
+                    const result = posts.map((post,index)=>{
+                        post.commentCount = counts[index]||0
+                        return post
+                    })
+                    return res.render('post',{
+                        posts:result,
+                        page:pageOptions
+                    })
                 })
+
             })
             .catch(err=>{
                 next(err)
@@ -49,6 +61,27 @@ router.route('/mine')
                 req.flash('error',err.message)
                 return res.render('error',{
                     error:err
+                })
+            })
+    })
+
+//文章详情
+router.route('/detail/:id')
+    .get((req,res,next)=>{
+        const id = req.params.id
+        Promise.all([postModel.getById(id),commentModel.getListByPostId(id),postModel.incPv(id)])
+            .then(rs=>{
+                const [post,comments,_] = rs
+                return res.render('post',{
+                    posts:[post],
+                    postId:post._id,
+                    comments,
+                    detail:true
+                })
+            })
+            .catch(error=>{
+                return res.render('error',{
+                    error
                 })
             })
     })
@@ -81,6 +114,26 @@ router.route('/create')
             return res.render('error',{
                 error:err
             })
+        })
+    })
+
+//发布评论
+router.route('/commemt/:postId')
+    .post(filterNotLogin,(req,res,next)=>{
+        const postId = req.params.postId
+        const author = req.session.user._id
+        const content = req.body.content
+
+        commentModel.create({
+            postId,
+            author,
+            content
+        }).then(com=>{
+            req.flash('success','评论成功')
+            return res.redirect(`/post/detail/${postId}`)
+        }).catch(error=>{
+            req.flash('error','评论失败')
+            return res.redirect(`/post/detail/${postId}`)
         })
     })
 

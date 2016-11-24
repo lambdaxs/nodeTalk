@@ -1,21 +1,43 @@
 <!--发布话题-->
-<div class="ui grid">
-    <div class="four wide column">
-        <a href="" class="avatar" data-title={{user.name}} data-content={{user.bio}}>
-            <img src="/images/{{user.avatar}}" class="avatar">
-        </a>
-    </div>
-    <div class="eight wide column">
-        <form class="ui form segment" method="post" enctype="application/x-www-form-urlencoded">
-            <div class="field required">
-                <label>标题</label>
-                <input placeholder="标题" name="title"/>
-            </div>
-            <div class="field required">
-                <label>内容</label>
-                <textarea name="content" rows="12" placeholder="内容"></textarea>
-            </div>
-            <input type="submit" value="完成" class="ui button fluid"/>
-        </form>
+<div id="create-form">
+    <div class="ui grid">
+        <div class="four wide column">
+            <a href="" class="avatar" data-title={{user.name}} data-content={{user.bio}}>
+                <img src="/images/{{user.avatar}}" class="avatar">
+            </a>
+        </div>
+        <div class="eight wide column">
+            <form class="ui form segment" method="post" enctype="application/x-www-form-urlencoded">
+                <div class="field required">
+                    <label>标题</label>
+                    <input placeholder="标题" name="title" v-model="title"/>
+                </div>
+                <div class="field required">
+                    <label>内容</label>
+                    <textarea name="content" rows="12" placeholder="内容" v-mode="content"></textarea>
+                </div>
+                <input type="submit" value="完成" class="ui button fluid" v-on:click="vali"/>
+            </form>
+        </div>
     </div>
 </div>
+
+
+<script>
+    var postModel = new Vue({
+        el:'create-form',
+        data:function () {
+            return {
+                title:'',
+                content:''
+            }
+        },
+        methods:{
+            vali:function () {
+                console.log(this.title+this.content)
+            }
+        }
+    })
+
+
+</script>

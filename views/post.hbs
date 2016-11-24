@@ -4,6 +4,39 @@
     {{/each}}
 </div>
 
+
+{{#if comments}}
+<div class="ui horizontal divider">评论列表</div>
+<div id="comment-list">
+    {{#each comments}}
+    {{> commentItem}}
+    {{/each}}
+</div>
+{{/if}}
+
+
+{{#if detail}}
+<div class="ui horizontal divider">发表评论</div>
+<div id="comment-form">
+    <div class="ui grid">
+        <div class="four wide column">
+            <a href="" class="avatar" data-title={{user.name}} data-content={{user.bio}}>
+                <img src="/images/{{user.avatar}}" class="avatar">
+            </a>
+        </div>
+        <div class="eight wide column">
+            <form class="ui form segment" method="post" enctype="application/x-www-form-urlencoded" action="/post/commemt/{{postId}}">
+                <div class="field required">
+                    <label></label>
+                    <textarea name="content" rows="3" placeholder="内容"></textarea>
+                </div>
+                <input type="submit" value="评论" class="ui button primary"/>
+            </form>
+        </div>
+    </div>
+</div>
+{{/if}}
+
 {{#if page}}
 <div id="pageCtrl" style="text-align: center;margin: 20px 0 20px 0;">
     <div class="ui pagination menu">

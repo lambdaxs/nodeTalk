@@ -5,7 +5,7 @@
         </div>
         <div class="eight wide column">
             <div class="ui segment">
-                <h3>{{this.title}}</h3>
+                <h3><a href="/post/detail/{{this._id}}">{{this.title}}</a></h3>
                 <pre>{{this.content}}</pre>
                 <div>
                     <span class="tag">{{#formatDate this.createdAt}}{{/formatDate}}</span>
@@ -28,3 +28,4 @@
         </div>
     </div>
 </div>
+
