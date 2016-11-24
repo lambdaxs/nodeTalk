@@ -20,9 +20,11 @@
 <div id="comment-form">
     <div class="ui grid">
         <div class="four wide column">
+            {{#if user}}
             <a href="" class="avatar" data-title={{user.name}} data-content={{user.bio}}>
                 <img src="/images/{{user.avatar}}" class="avatar">
             </a>
+            {{/if}}
         </div>
         <div class="eight wide column">
             <form class="ui form segment" method="post" enctype="application/x-www-form-urlencoded" action="/post/commemt/{{postId}}">
@@ -30,7 +32,11 @@
                     <label></label>
                     <textarea name="content" rows="3" placeholder="内容"></textarea>
                 </div>
+                {{#if user}}
                 <input type="submit" value="评论" class="ui button primary"/>
+                {{else}}
+                <a href="/user/signin" class="ui button primary">登录</a>
+                {{/if}}
             </form>
         </div>
     </div>
