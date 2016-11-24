@@ -103,7 +103,7 @@ router.route('/signup')
         const multiparty = require('multiparty')
         const options = {
             maxFieldsSize:2*1024*1024,
-            maxFilesSize:1,
+            maxFilesSize:10*1024*1024,
             uploadDir:path.join(req.appDir,'public/images')
         }
         const form = new multiparty.Form(options)
