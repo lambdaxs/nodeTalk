@@ -3,3 +3,18 @@
     {{> postItem}}
     {{/each}}
 </div>
+
+{{#if page}}
+<div id="pageCtrl" style="text-align: center;margin: 20px 0 20px 0;">
+    <div class="ui pagination menu">
+        {{#if page.first}}
+        <a href="/post/list/{{page.next}}/10" class="item">下一页</a>
+        {{else if page.last}}
+        <a href="/post/list/{{page.pre}}/10" class="item">😝没有跟多了~ 上一页</a>
+        {{else}}
+        <a href="/post/list/{{page.pre}}/10" class="item">上一页</a>
+        <a href="/post/list/{{page.next}}/10" class="item">下一页</a>
+        {{/if}}
+    </div>
+</div>
+{{/if}}

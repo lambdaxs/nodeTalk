@@ -5,22 +5,24 @@
         </div>
         <div class="eight wide column">
             <div class="ui segment">
-                <h3>{{title}}</h3>
-                <pre>{{content}}</pre>
+                <h3>{{this.title}}</h3>
+                <pre>{{this.content}}</pre>
                 <div>
-                    <span class="tag">{{#date createdAt}}{{/date}}</span>
+                    <span class="tag">{{#formatDate this.createdAt}}{{/formatDate}}</span>
                     <span class="tag right" style="float: right;">
-                    <span>浏览 10</span>
-                    <span>留言 1 </span>
-                    <div class="ui inline dropdown">
-                        <div class="text">操作</div>
-                        <i class="dropdown icon"></i>
-                        <div class="menu">
-                          <div class="item"><a href="/post/edit/{{_id}}">编辑</a></div>
-                          <div class="item"><a href="/post/remove/{{_id}}">删除</a></div>
+                            <span>浏览 {{this.pv}}</span>
+                            <span>评论 {{this.commentCount}}</span>
+                        {{#if this.isSelf}}
+                        <div class="ui inline dropdown">
+                            <div class="text">操作</div>
+                            <i class="dropdown icon"></i>
+                            <div class="menu">
+                                <div class="item"><a href="/post/edit/{{this._id}}">编辑</a></div>
+                                <div class="item"><a href="/post/remove/{{this._id}}">删除</a></div>
+                            </div>
                         </div>
-                    </div>
-                </span>
+                        {{/if}}
+                    </span>
                 </div>
             </div>
         </div>

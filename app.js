@@ -2,14 +2,34 @@ const express = require('express')
 const path = require('path')
 const config = require('config-lite')
 const app = express()
+const moment = require('moment')
 
 //设置视图引擎为hbs
 const exphbs = require('express-handlebars')
-app.set('views', path.join(__dirname, 'views'))
-app.engine('hbs', exphbs({
+const hbs = exphbs.create({
     defaultLayout:'main',
-    extname: '.hbs'
-}))
+    extname: '.hbs',
+    helpers: {
+        formatDate(date){
+            moment.locale('zh-cn')
+            //间隔秒数
+            const time = (Date.now()-date.getTime())/1000
+            if (time < 10){
+                return '刚刚'
+            }else if(time<60){
+                return `${parseInt(time)}秒前`
+            }else if (time<=3600){
+                return moment(date).startOf('minute').fromNow()
+            }else if(time<=3600*5){
+                return moment(date).startOf('hour').fromNow()
+            }else {
+                return moment(date).format('YYYY/MM/DD HH:mm')
+            }
+        }
+    }
+})
+app.set('views', path.join(__dirname, 'views'))
+app.engine('hbs', hbs.engine)
 app.set('view engine', 'hbs')
 
 //配置dubug日志
@@ -27,13 +47,6 @@ app.use(bodyParser.urlencoded({ extended: false }))
 
 //静态文件路径
 app.use(express.static(path.join(__dirname, 'public')))
-
-// 处理表单上传
-// app.use(require('express-formidable')({
-//     uploadDir: path.join(__dirname, 'public/images'),// 上传文件目录
-//     keepExtensions: true,// 保留后缀
-//     encoding: 'utf-8'
-// }))
 
 // session 中间件
 const session = require('express-session')
@@ -60,6 +73,7 @@ app.locals.blog = {
     title: "Lambda",
     description: "only coder"
 }
+
 
 //添加模板必需的三个变量
 app.use((req, res, next)=> {

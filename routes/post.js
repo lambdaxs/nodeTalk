@@ -4,6 +4,7 @@
 const router = require('express').Router()
 const path = require('path')
 const moment = require('moment')
+const util = require('../lib/util')
 
 const filterNotLogin = require('../middle/checkLogin').filterNotLogin
 const postModel = require('../models/post')
@@ -15,19 +16,40 @@ router.route('/list/:page/:count')
         const page = req.params.page*1 || 1
         const count = req.params.count*1 || 10
         const skip = (page-1)*count
-        postModel.getList(skip,count)
-            .then(posts=>{
+
+        Promise.all([postModel.getList(skip,count),postModel.getCount()])
+            .then(rs=>{
+                const [posts,maxCount] = rs
                 return res.render('post',{
                     posts,
-                    helpers:{
-                        date(date){
-                            return moment(date).format("YYYY/MM/DD hh:mm:ss")
-                        }
-                    }
+                    page:util.page(page,count,maxCount)
                 })
             })
             .catch(err=>{
                 next(err)
+            })
+    })
+
+//个人主页列表
+router.route('/mine')
+    .get(filterNotLogin,(req,res,next)=>{
+        const userId = req.session.user._id
+
+        postModel.getListByUserId(userId)
+            .then(posts=>{
+                const rs = posts.map(post=>{
+                    post.isSelf = true
+                    return post
+                })
+                res.render('post',{
+                    posts:rs
+                })
+            })
+            .catch(err=>{
+                req.flash('error',err.message)
+                return res.render('error',{
+                    error:err
+                })
             })
     })
 

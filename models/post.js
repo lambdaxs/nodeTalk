@@ -37,7 +37,7 @@ module.exports = {
     getListByUserId(userId){
         var query = {}
         if (userId){
-            query.poster = userId
+            query.author = userId
         }
         return postModel
             .find(query)
@@ -52,6 +52,9 @@ module.exports = {
     //浏览量+1
     incPv(postId){
         return postModel.update({_id:postId},{$inc:{pv:1}}).exec()
+    },
+    getCount(){
+        return postModel.count({}).exec()
     }
 
 
