@@ -2,40 +2,22 @@ const express = require('express')
 const path = require('path')
 const config = require('config-lite')
 const app = express()
-const moment = require('moment')
 
 //设置视图引擎为hbs
-const exphbs = require('express-handlebars')
-const hbs = exphbs.create({
-    defaultLayout:'main',
-    extname: '.hbs',
-    helpers: {
-        formatDate(date){
-            moment.locale('zh-cn')
-            //间隔秒数
-            const time = (Date.now()-date.getTime())/1000
-            if (time < 10){
-                return '刚刚'
-            }else if(time<60){
-                return `${parseInt(time)}秒前`
-            }else if (time<=3600){
-                return moment(date).startOf('minute').fromNow()
-            }else if(time<=3600*5){
-                return moment(date).startOf('hour').fromNow()
-            }else {
-                return moment(date).format('YYYY/MM/DD HH:mm')
-            }
-        }
-    }
-})
+const hbs = require('./middle/viewHelps')
 app.set('views', path.join(__dirname, 'views'))
 app.engine('hbs', hbs.engine)
 app.set('view engine', 'hbs')
 
+
+//静态文件路径
+app.use(express.static(path.join(__dirname, 'public')))
+
+
 //配置dubug日志
 const favicon = require('serve-favicon')
 const logger = require('morgan')
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')))
+app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')))
 app.use(logger('dev'))
 
 //基本参数解析
@@ -45,8 +27,6 @@ const bodyParser = require('body-parser')
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 
-//静态文件路径
-app.use(express.static(path.join(__dirname, 'public')))
 
 // session 中间件
 const session = require('express-session')

@@ -26,6 +26,7 @@
     "redis": "*",
     "sequelize": "*",
     "serve-favicon": "~2.3.0",
-    "sha1":"*"
+    "sha1":"*",
+    "showdown":"*"
   }
 }
