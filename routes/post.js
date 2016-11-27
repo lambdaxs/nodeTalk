@@ -108,13 +108,9 @@ router.route('/create')
         }).then(post=>{
             return postModel.getById(post._id)
         }).then(post=>{
+            req.flash('success','发布成功')
             return res.render('post',{
-                posts:[post],
-                helpers:{
-                    date(date){
-                        return moment(date).format("YYYY/MM/DD hh:mm:ss")
-                    }
-                }
+                posts:[post]
             })
         }).catch(err=>{
             return res.render('error',{

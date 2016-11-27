@@ -22,6 +22,8 @@ const hbs = exphbs.create({
                 return moment(date).startOf('minute').fromNow()
             }else if(time<=3600*5){
                 return moment(date).startOf('hour').fromNow()
+            }else if (time <= 3600*24*5){
+                return moment(date).startOf('day').fromNow()
             }else {
                 return moment(date).format('YYYY/MM/DD HH:mm')
             }

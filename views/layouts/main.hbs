@@ -36,6 +36,7 @@
     </div>
 </div>
 
+
 <!--提示卡-->
 <div id="tip-view">
     <div class="ui grid">
@@ -43,12 +44,14 @@
         <div class="eight wide column">
             {{#if success}}
             <div class="ui success message">
-                <p>{{success}}</p>
+                {{success}}
+                <i class="close icon"></i>
             </div>
             {{/if}}
             {{#if error}}
             <div class="ui error message">
-                <p>{{error}}</p>
+                {{error}}
+                <i class="close icon"></i>
             </div>
             {{/if}}
         </div>
@@ -63,6 +66,10 @@
         inline: true,
         position: 'bottom right',
         lastResort: 'bottom right',
+    })
+
+    $('.message .icon').on('click',function () {
+        $(this).closest('.message').fadeOut()
     })
 </script>
 </html>
