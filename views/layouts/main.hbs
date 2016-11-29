@@ -68,6 +68,13 @@
         lastResort: 'bottom right',
     })
 
+    var messageView = $('.message')
+    if (messageView){
+        setTimeout(function () {
+            messageView.closest('.message').fadeOut()
+        },2500)
+    }
+
     $('.message .icon').on('click',function () {
         $(this).closest('.message').fadeOut()
     })
